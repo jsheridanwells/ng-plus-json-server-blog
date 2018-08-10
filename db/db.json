@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Jeremy Galinho Doido",
+      "email": "jgd@example.com",
+      "password": "123456"
+    }
+  ],
+  "blogs": [
+    {
+      "id": 1,
+      "userId": "1",
+      "name": "Jeremy Galinho Doido's Wonderful Blog"
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "blogId": 1,
+      "title": "Lorem ipsum dolor sit amet.",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero."
+    }
+  ]
+}

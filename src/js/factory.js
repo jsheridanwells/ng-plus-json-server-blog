@@ -8,7 +8,7 @@ app.factory('postFactory', function ($q, $http, authFactory) {
         return $q((resolve, reject) => {
             $http.get(domain + '/posts/')
                 .then(posts => resolve(posts.data))
-                .catch(e => reject(e));
+                .catch(error => reject(error));
         });
     };
 
@@ -16,12 +16,11 @@ app.factory('postFactory', function ($q, $http, authFactory) {
         return $q((resolve, reject) => {
             $http.get(domain + '/posts/' + id)
                 .then(post => resolve(post.data))
-                .catch(e => reject(e));
+                .catch(error => reject(error));
         });
     };
 
     const addPost = (model) => {
-
         return $q((resolve, reject) => {
             $http({
                     method: 'POST',
@@ -81,7 +80,7 @@ app.service('errorService', function () {
         * @returns {string} error message
         */
         getErrorTemplate: error => {
-            return `Well shoot, we had this happened:
+            return `Well shoot, we had this happening:
                     ${ error.message }`;
         }
     };

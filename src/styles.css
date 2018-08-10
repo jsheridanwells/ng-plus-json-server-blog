@@ -1,9 +1,21 @@
-h1 {
+.pointer {
     cursor: pointer;
 }
 
 .error-box {
     color: red;
+}
+
+.posts-template {
+    margin: 0 0 3.5em 0;
+}
+
+.button-box {
+    padding: 1em;
+}
+
+.new-post-button {
+    margin: 5em 0 0 4em;
 }
 
 /*ng stuff*/

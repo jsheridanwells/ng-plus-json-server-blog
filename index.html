@@ -17,7 +17,7 @@
   <body ng-app="fastBlogger" ng-cloak>
       <div class="container" ng-controller="blogsController">
           <nav class="navbar">
-              <h1 ng-click="getAllPosts()">Fast Blogger</h1>
+              <h1 class="pointer" ng-click="getAllPosts()">FAST  // Blogger</h1>
           </nav>
           <div id="main">
             <!-- ERROR TEMPLATE -->
@@ -28,20 +28,24 @@
             <div id="all-blogs" class="row">
                 <!-- LEFT SIDEBAR -->
                 <div class="col-3">
-                    <button type="button" class="btn btn-primary" ng-click="showPostForm('new')">
+                    <button type="button" class="btn btn-primary new-post-button" ng-click="showPostForm('new')">
                         New Post
                     </button>
                 </div>
                 <div class="col-6">
                     <!-- ALL POSTS TEMPLATE -->
-                    <div ng-if="posts.length > 0 && views.showingAllPosts" ng-repeat="p in posts">
-                        <h2>{{ p.title }}</h2>
+                    <div class="posts-template" ng-if="posts.length > 0 && views.showingAllPosts" ng-repeat="p in posts">
+                        <h2>
+                            <a class="pointer" ng-href="" ng-click="showSinglePost(p.id)">
+                                 {{ p.title }}
+                            </a>
+                        </h2>
                         <p>{{ p.body }}</p>
-                        <button type="button" class="btn btn-success btn-sm" ng-click="showPostForm('edit')">Edit</button>
+                        <button type="button" class="btn btn-success btn-sm" ng-click="showPostForm('edit', p.id)">Edit</button>
                         <button type="button" class="btn btn-danger btn-sm" ng-click="showDeleteWarning(p.id)">Delete</button>
                     </div>
                     <!-- ADD OR EDIT TEMPLATE -->
-                    <div id="add-edit-post" ng-if="views.showingPostForm">
+                    <div id="add-edit-post" ng-if="views.showingNewPostForm || views.showingEditPostForm">
                         <div class="form-group">
                           <label for="post-title"></label>
                           <input type="text" class="form-control" name="title" id="post-title" placeholder="Title:" ng-model="currentPost.title">
@@ -50,7 +54,8 @@
                           <label for="post-body">Body:</label>
                           <textarea class="form-control" name="body" id="post-body" rows="3" ng-model="currentPost.body"></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" ng-click="addPost(currentPost)">Post Me!</button>
+                        <button type="button" class="btn btn-primary" ng-if="views.showingNewPostForm" ng-click="addPost(currentPost)">Post Me!</button>
+                        <button type="button" class="btn btn-primary" ng-if="views.showingEditPostForm" ng-click="editPost(currentPost.id)">Post Me!</button>
                     </div>
                     <!-- DELETE WARNING -->
                     <div id="delete-warning" ng-if="views.showingDeleteWarning">
@@ -58,15 +63,22 @@
                         <button type="button" class="btn btn-danger" ng-click="deletePost(currentPost.id)">Yes!</button>
                         <button type="button" class="btn btn-secondary" ng-click="getAllPosts()">Mmmmm, don't think so...</button>
                     </div>
+                    <!-- SINGLE POST TEMPLATE -->
+                    <div id="single-post" ng-if="views.showingSinglePost">
+                        <h2>{{ currentPost.title }}</h2>
+                        <p>{{ currentPost.body }}</p>
+                        <div class="button-box">
+                            <button type="button" class="btn btn-success btn-sm" ng-click="showPostForm('edit', currentPost.id)">Edit</button>
+                            <button type="button" class="btn btn-danger btn-sm" ng-click="showDeleteWarning(currentPost.id)">Delete</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-3"></div>
+                <div class="col-3">
+                    <div ng-if="views.showingSinglePost || views.showingNewPostForm">
+                        <h3 class="pointer" ng-click="getAllPosts()">X</h3>
+                    </div>
+                </div>
             </div>
-
-            <!-- SINGLE POST TEMPLATE -->
-            <div id="single-post" class="row" ng-if="views.showingSinglePost">
-                
-            </div>
-
           </div>
       </div>
       

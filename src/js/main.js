@@ -4,23 +4,31 @@ let app = angular.module('fastBlogger', []);
 
 app.controller('blogsController', function ($scope, postFactory, errorService) {
     
+    // initalizes sections of index.html to display    
+    $scope.views = {
+        showingAllPosts:  true,
+        showingPostForm:  false,
+        showingDeleteWarning:  false,
+        showingSinglePost: false
+    };
+
     $scope.error = '';
     $scope.posts = [];
-    $scope.showingAllPosts = true;
-    $scope.showingPostForm = false;
     $scope.currentPost = {};
 
     $scope.getAllPosts = blogId => {
         postFactory.getAllPosts(1)
             .then(posts => {
                 $scope.posts = posts;
-                $scope.showingAllPosts = true;
+                renderView('showingAllPosts');
             })
             .catch(error => $scope.error = errorService.getErrorTemplate(error));
     };
 
     $scope.getPost = postId => {
-
+        postFactory.getPost(postId)
+            .then(post => $scope.currentPost = post)
+            .catch(error => errorService.getErrorTemplate(error));
     };
 
     $scope.addPost = postModel => {
@@ -29,7 +37,7 @@ app.controller('blogsController', function ($scope, postFactory, errorService) {
         } else {
             postFactory.addPost(postModel)
                 .then(() => {
-                    $scope.showingPostForm = false;
+                    renderView('showingAllPosts');
                     $scope.getAllPosts();
                 })
                 .catch(error => $scope.error = errorService.getErrorTemplate(error));
@@ -41,23 +49,31 @@ app.controller('blogsController', function ($scope, postFactory, errorService) {
     };
 
     $scope.deletePost = postId => {
-
+        postFactory.deletePost(postId)
+            .then(() => $scope.getAllPosts())
+            .catch(error => $scope.error = errorService.getErrorTemplate(error));
     };
 
     $scope.showPostForm = msg => {
-        $scope.showingAllPosts = false;
-        $scope.showingPostForm = true;
+        renderView('showingPostForm');
         if (msg === 'new') {
-            $scope.currentPost = {
-                title: '',
-                body: ''
-            };
+            $scope.currentPost = { title: '', body: '' };
         } else {
             // TODO : edit post logic here
         }
     };
 
+    $scope.showDeleteWarning = id => {
+        renderView('showingDeleteWarning');
+        $scope.getPost(id);
+    };
+
     $scope.getAllPosts();
+
+    const renderView = view => {
+        Object.keys($scope.views).forEach(v => $scope.views[v] = false);
+        $scope.views[view] = true;
+    };
 });
 
 app.factory('postFactory', function($q, $http, authFactory) {
@@ -68,11 +84,17 @@ app.factory('postFactory', function($q, $http, authFactory) {
         return $q((resolve, reject) => {
             $http.get(domain + '/posts/')
                 .then(posts => resolve(posts.data))
-                .catch(e => { console.log(e); reject(e)});
+                .catch(e => reject(e));
         });
     };
 
-    const getPost = () => {};
+    const getPost = (id) => {
+        return $q((resolve, reject) => {
+            $http.get(domain + '/posts/' + id)
+                .then(post => resolve(post.data))
+                .catch(e => reject(e));
+        });
+    };
 
     const addPost = (model) => {
         return $q((resolve, reject) => {
@@ -88,7 +110,16 @@ app.factory('postFactory', function($q, $http, authFactory) {
 
     const editPost = () => {};
 
-    const deletePost = () => {};
+    const deletePost = id => {
+        return $q((resolve, reject) => {
+            $http({
+                method: 'DELETE',
+                url: domain + '/posts/' + id                
+            })
+            .then( _ => resolve())
+            .catch(error => reject(error));
+        });
+    };
 
     return {
         getAllPosts,

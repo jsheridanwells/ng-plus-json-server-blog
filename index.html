@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>FAST // Blogger</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- ANGULAR -->
+        <script src="/lib/node_modules/angular/angular.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+    <!-- MY CSS -->
+    <link rel="stylesheet" href="src/styles.css">
+  </head>
+  <body ng-app="fastBlogger" ng-cloak>
+      <div class="container">
+          <nav class="navbar">
+              <h1>Fast Blogger</h1>
+          </nav>
+          <div id="main" ng-controller="blogsController">
+            <!-- ERROR TEMPLATE -->
+            <div class="error-box" ng-if="error.length > 0">
+                <p>{{ error }}</p>
+            </div>
+
+            <div id="all-blogs" class="row">
+                <!-- LEFT SIDEBAR -->
+                <div class="col-3">
+                    <button type="button" class="btn btn-primary" ng-click="showPostForm('new')">
+                        New Post
+                    </button>
+                </div>
+                <div class="col-6">
+                    <!-- ALL POSTS TEMPLATE -->
+                    <div ng-if="posts.length > 0 && showingAllPosts" ng-repeat="p in posts">
+                        <h2>{{ p.title }}</h2>
+                        <p>{{ p.body }}</p>
+                    </div>
+                    <!-- ADD OR EDIT TEMPLATE -->
+                    <div id="add-edit-post" ng-if="showingPostForm">
+                        <div class="form-group">
+                          <label for="post-title"></label>
+                          <input type="text" class="form-control" name="title" id="post-title" placeholder="Title:" ng-model="currentPost.title">
+                        </div>
+                        <div class="form-group">
+                          <label for="post-body">Body:</label>
+                          <textarea class="form-control" name="body" id="post-body" rows="3" ng-model="currentPost.body"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="addPost(currentPost)">Post Me!</button>
+                    </div>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <!-- SINGLE POST TEMPLATE -->
+            <div id="single-post" class="row" ng-if="!showingAllPosts">
+                
+            </div>
+
+          </div>
+      </div>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+    <!-- MY SCRIPTS -->
+    <script src="/src/js/main.js"></script>
+    <script src="/src/js/factory.js"></script>
+    <script src="/src/js/controller.js"></script>
+  </body>
+</html>  
